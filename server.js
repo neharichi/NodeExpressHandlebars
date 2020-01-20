@@ -26,6 +26,10 @@ var routes = require("./controllers/burgers_controller");
 // allows the app (express) to use the var routes
 app.use(routes);
 
+app.get("/", function(req, res) {
+  res.json(path.join(__dirname, "public/index.html"));
+});
+
 // Start our server so that it can begin listening to client requests.
 app.listen(PORT, function() {
     // Log (server-side) when our server has started
