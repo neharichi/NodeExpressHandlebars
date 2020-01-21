@@ -26,9 +26,18 @@ var routes = require("./controllers/burgers_controller");
 // allows the app (express) to use the var routes
 app.use(routes);
 
-app.get("/", function(req, res) {
-  res.json(path.join(__dirname, "public/index.html"));
-});
+app.get('/db', async (req, res) => {
+  try {
+    const client = await pool.connect()
+    const result = await client.query('SELECT * FROM test_table');
+    const results = { 'results': (result) ? result.rows : null};
+    res.render('pages/db', results );
+    client.release();
+  } catch (err) {
+    console.error(err);
+    res.send("Error " + err);
+  }
+})
 
 // Start our server so that it can begin listening to client requests.
 app.listen(PORT, function() {
